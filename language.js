@@ -7,10 +7,13 @@ function setLanguage(language) {
   languageButton.textContent = language === 'en' ? 'FR' : 'EN';
   languageButton.setAttribute('aria-label', language === 'en' ? 'Afficher en français' : 'View in English');
   window.dispatchEvent(new Event('portfolio:language'));
-  document.title = language === 'en' ? 'Zhong Wen | Electronics & Metrology' : 'Zhong Wen | Électronique et métrologie';
+  document.title = document.body.dataset[language === 'en' ? 'pageTitleEn' : 'pageTitleFr'] || 'Zhong Wen';
+  try { sessionStorage.setItem('portfolio-language', language); } catch (_) {}
 }
 languageButton.addEventListener('click', () => setLanguage(document.documentElement.lang === 'en' ? 'fr' : 'en'));
-setLanguage('en');
+let initialLanguage = 'en';
+try { if (sessionStorage.getItem('portfolio-language') === 'fr') initialLanguage = 'fr'; } catch (_) {}
+setLanguage(initialLanguage);
 
 /* Keep the measuring-scale marker aligned with the section being read. */
 (() => {
